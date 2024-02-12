@@ -18,7 +18,7 @@ if [ ! -r "${CBZ}" ]; then
 	exit 1
 fi
 
-if [ ! "$CBZ" = *.cbz ]; then
+if [[ ! "$CBZ" == *.cbz ]]; then
     echo "Not a CBZ file"
     exit 1
 fi
@@ -42,19 +42,11 @@ FNAME_NO_EXT=$(basename "$CBZ" .cbz)
 AUTHOR=${2:-""}
 TITLE=${3:-$FNAME_NO_EXT}
 
-# echo "fname: $FNAME_NO_EXT"
-# echo "author: $AUTHOR"
-# echo "title: $TITLE"
-
 echo "Creating PDF file…"
 shopt -s globstar nullglob
 
-if [ -z "$TITLE" ]; then
-	OUTFILE="$DIRNAME/$FNAME_NO_EXT.pdf"
-else
-	OUTFILE="$DIRNAME/$TITLE.pdf"
-fi
+OUTFILE="$DIRNAME/$TITLE.pdf"
 
 img2pdf -o "$OUTFILE" --title "$TITLE" --subject "$TITLE" --author "$AUTHOR" --creator "$AUTHOR" --viewer-fit-window "$EXTRACT_DIR"/**/*.{jpg,png}
 
-echo "Done!"
+echo "Created $TITLE.pdf"
